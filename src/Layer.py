@@ -12,10 +12,9 @@ class Layer:
         self.app = app
         self.visible = True
         self.listOfObjects = []
-        self.length = 0
         
     def show(self, colour = None, isCurrent = False):
-        if (self.visible):
+        if self.visible:
             for obj in self.listOfObjects:
                 if (type(obj) == Stroke):
                     obj.draw(None, colour, isCurrent)
@@ -23,11 +22,11 @@ class Layer:
                     obj.draw()
                 
     def addPointToLayer(self, point):
-        if (len(self.listOfObjects) > 0):
+        if len(self.listOfObjects) > 0:
             self.listOfObjects[len(self.listOfObjects) - 1].addPoint(point)
     
-    def addStroke(self, width, colour):
-        self.addObject(Stroke(width, colour, self.app))
+    def addStroke(self, stroke):
+        self.addObject(stroke)
     
     def addFill(self, radius, colour):
         self.addObject(Fill(radius, colour, self.app))
@@ -41,5 +40,3 @@ class Layer:
 
     def addObject(self, obj):
         self.listOfObjects.append(obj)
-        self.length += 1
-        

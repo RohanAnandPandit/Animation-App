@@ -46,9 +46,12 @@ class ColourPanel:
     
     def getSelectedColour(self):
         for swatch in self.listOfSwatches:
-            if (swatch.isMouseOver()):
+            if swatch.isMouseOver():
                 return swatch.colour
         return None
+    
+    def setCor(cor):
+        self.x, self.y = cor 
             
 class ColourSwatch:
     def __init__(self, colour, colourPanel):
@@ -56,9 +59,9 @@ class ColourSwatch:
         self.colour = colour
     
     def show(self):
-        pygame.draw.rect(self.colourPanel.app.screen, self.colour,
+        pygame.draw.rect(self.colourPanel.app.getScreen(), self.colour,
                          (self.x, self.y, self.width, self.height))
-        pygame.draw.rect(self.colourPanel.app.screen, (0, 0, 0),
+        pygame.draw.rect(self.colourPanel.app.getScreen(), (0, 0, 0),
                          (self.x, self.y, self.width, self.height), 1)
     
     def setValues(self, x, y, width, height):

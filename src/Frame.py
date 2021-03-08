@@ -15,9 +15,10 @@ class Frame:
         self.selected = False
     
     def show(self, colour = None, showBorder = False):
-        if (self.selected and showBorder):
-            pygame.draw.rect(self.app.screen, (255, 0, 0),
-                             (5, 5, self.app.windowWidth - 15, self.app.height - 12), 7)
+        if self.selected and showBorder:
+            pygame.draw.rect(self.app.getScreen(), (255, 0, 0),
+                             (5, 5, self.app.windowWidth - 15,
+                              self.app.windowHeight - 12), 7)
         for i in range(len(self.listOfLayers)):
             self.listOfLayers[i].show(colour, i == self.currentLayer)
             
@@ -27,8 +28,10 @@ class Frame:
     def addPointToFrame(self, point):
         self.getCurrentLayer().addPointToLayer(point)
     
-    def addStroke(self, width, colour):
-        self.getCurrentLayer().addStroke(width, colour)
+    def addStroke(self, stroke):
+        self.getCurrentLayer().addStroke(stroke)
+        #print(list(map(lambda obj:obj.listOfPoints,
+                       #self.getCurrentLayer().listOfObjects)))
 
     def addFill(self, radius, colour):
         self.getCurrentLayer().addFill(radius, colour)
@@ -49,13 +52,15 @@ class Frame:
         self.getCurrentLayer().undo()
     
     def select(self):
-        app.selectedFrames.append(self)
         self.selected = True
         
     def unselect(self):
         try:
-            app.selectedFrames.remove(self)
-        except ValueError:
+            self.selected = False
+            self.app.selectedFrames.remove(self)
+        except:
             pass
-        self.selected = False
         
+    def copy(self):
+        del self.app
+          
