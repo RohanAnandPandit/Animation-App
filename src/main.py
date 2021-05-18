@@ -2,29 +2,31 @@
 """
 Created on Sun Jun 21 19:44:21 2020
 
-@author: rohan
+@author: rohan5
 """
-import pygame
 from App import App
-import sys
+from Project import Project
 import os
 import ctypes
-from utils import screenSize, setScreen
-import pickle 
+from pickle import load
+from utils import set_screen
+import pygame
+import pickle
+from utils import APP_PATH
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (2, 60) 
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (2, 60)
+window_width, window_height = 2700, 1700
+set_screen(window_width, window_height)
+pygame.display.set_caption('Animatis')
 
-windowWidth, windowHeight = screenSize()
-windowWidth -= 5
-windowHeight -= 80
-screen = setScreen(windowWidth, windowHeight)
-pygame.display.set_caption('Anim8')
-screen.fill((255, 255, 255))
+try:
+    file = open(APP_PATH, 'rb')
+    app = pickle.load(file)
+    app = App(app.project)
+except:
+    name = 'untitled'
+    project = Project(window_width, window_height, name=name)
+    app = App(project)
 
-file = open('my_animation', 'rb')
-app = pickle.load(file)
-file.close()
-
-app = App(windowWidth, windowHeight)
 app.main()
