@@ -4,63 +4,67 @@ Created on Sun Jun 21 19:39:34 2020
 
 @author: rohan
 """
-import pygame
 from Layer import Layer
+from pygame import draw
+
 
 class Frame:
     def __init__(self, app):
         self.app = app
-        self.listOfLayers = [Layer(self.app)]
-        self.currentLayer = 0
+        self.layers = [Layer(self.app)]
+        self.current_layer = 0
         self.selected = False
-    
-    def show(self, colour = None, showBorder = False):
-        if self.selected and showBorder:
-            pygame.draw.rect(self.app.getScreen(), (255, 0, 0),
-                             (5, 5, self.app.windowWidth - 15,
-                              self.app.windowHeight - 12), 7)
-        for i in range(len(self.listOfLayers)):
-            self.listOfLayers[i].show(colour, i == self.currentLayer)
-            
-    def getCurrentLayer(self):
-        return self.listOfLayers[self.currentLayer]
-        
-    def addPointToFrame(self, point):
-        self.getCurrentLayer().addPointToLayer(point)
-    
-    def addStroke(self, stroke):
-        self.getCurrentLayer().addStroke(stroke)
-        #print(list(map(lambda obj:obj.listOfPoints,
-                       #self.getCurrentLayer().listOfObjects)))
+        self.is_background = False
 
-    def addFill(self, radius, colour):
-        self.getCurrentLayer().addFill(radius, colour)
+    def show(self, colour=None, show_border=False):
+        if self.selected and show_border:
+            draw.rect(self.app.get_screen(), (255, 0, 0),
+                      (5, 5, self.app.window_width - 15,
+                       self.app.window_height - 12), 7)
 
-    def addImage(self, fileLocation):
-        self.getCurrentLayer().addImage(fileLocation)
-    
-    def addLayer(self):
-        self.listOfLayers.append(Layer(self.app))
-    
-    def prevLayer(self):
-        self.currentLayer = max(0, self.currentLayer - 1)
+        for i in range(len(self.layers)):
+            self.layers[i].show(colour, i == self.current_layer)
 
-    def nextLayer(self):
-        self.currentLayer = min(len(self.listOfLayers) - 1,
-                                self.currentLayer + 1)                   
+    def get_current_layer(self):
+        return self.layers[self.current_layer]
+
+    def add_stroke(self, stroke):
+        self.get_current_layer().add_stroke(stroke)
+
+    def add_fill(self, radius, colour):
+        self.get_current_layer().addFill(radius, colour)
+
+    def add_image(self, fileLocation):
+        self.get_current_layer().add_image(fileLocation)
+
+    def add_layer(self):
+        self.layers.append(Layer(self.app))
+
+    def prev_layer(self):
+        self.current_layer = max(0, self.current_layer - 1)
+
+    def next_layer(self):
+        self.current_layer = min(len(self.layers) - 1,
+                                 self.current_layer + 1)
+
     def undo(self):
-        self.getCurrentLayer().undo()
-    
+        self.get_current_layer().undo()
+
     def select(self):
         self.selected = True
-        
+
     def unselect(self):
         try:
             self.selected = False
-            self.app.selectedFrames.remove(self)
+            self.app.selected_frames.remove(self)
         except:
             pass
-        
+
     def copy(self):
         del self.app
-          
+
+    def set_background(self, is_background):
+        self.is_background = is_background
+
+    def is_background(self):
+        return self.is_background

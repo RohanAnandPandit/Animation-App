@@ -11,13 +11,13 @@ class Layer:
     def __init__(self, app):
         self.app = app
         self.visible = True
-        self.listOfObjects = []
+        self.objects = []
 
-    def show(self, colour=None, isCurrent=False):
+    def show(self, colour=None, is_current=False):
         if self.visible:
-            for obj in self.listOfObjects:
+            for obj in self.objects:
                 if type(obj) == Stroke:
-                    obj.draw(None, colour, isCurrent)
+                    obj.draw(None, colour, is_current)
                 else:
                     obj.draw()
 
@@ -33,11 +33,11 @@ class Layer:
         self.listOfImages.append(fileLocation)
 
     def undo(self):
-        if len(self.listOfObjects) > 0:
-            del self.listOfObjects[len(self.listOfObjects) - 1]
+        if len(self.objects) > 0:
+            del self.objects[len(self.objects) - 1]
 
     def add_object(self, obj):
-        self.listOfObjects.append(obj)
+        self.objects.append(obj)
 
     def get_strokes(self):
-        return self.listOfObjects
+        return self.objects

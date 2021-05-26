@@ -1,0 +1,7 @@
+src/projects/
+src/*.zip
+src/dist/
+src/build/
+src/main.spec
+src/__pycache__/
+src/untitled
